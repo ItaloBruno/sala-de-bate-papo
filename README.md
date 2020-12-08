@@ -1,5 +1,22 @@
 # Sala de bate papo
 
+Implementar um Sistema de Gerenciamento e Utilização de Comunicação
+por Mensagens
+
+Devem ser implementado um servidor (sockets ou RMI/RPC) para gerenciar o
+Broker, com as seguintes funcionalidades:
+
+1. Adicionar e remover filas e tópicos :heavy_check_mark:
+2. Listas quantidade de mensagens nas filas :hourglass_flowing_sand: :bug: :shipit:	
+3. Instanciar novos usuários (verificar duplicidade de nomes) :x:
+4. Criar automaticamente uma fila para cada usuário novo criado :hourglass_flowing_sand:
+
+Os usuários, por sua vez, devem implementar as seguintes funcionalidades:
+
+1. Permitir assinar tópicos :x:	
+2. Enviar mensagens entre usuários diretamente online :heavy_check_mark:	
+3. Enviar mensagens entre usuários diretamente offline :heavy_check_mark:
+4. Enviar mensagens para tópicos :x:
 
 
 ## Tecnologias utilizadas nesse projeto
