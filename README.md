@@ -21,13 +21,15 @@ Os usuários, por sua vez, devem implementar as seguintes funcionalidades:
 
 ## Tecnologias utilizadas nesse projeto
 
-[Python 3.8](https://www.python.org/downloads/)
+[Python 3.7.7](https://www.python.org/downloads/)
 
 [RabbitMQ](https://www.rabbitmq.com/)
 
 [Pika](https://pika.readthedocs.io/en/stable/)
 
 [PyRabbit](https://github.com/bkjones/pyrabbit)
+
+[Kivy](https://github.com/kivy/kivy)
 
 [Docker](https://www.docker.com/)
 
@@ -55,4 +57,5 @@ caso dê problema com a porta usada pelo rabbitmq: https://stackoverflow.com/que
 - [RabbitMQ com Python](https://gist.github.com/renatoapcosta/2a4b6c7a5933edf09e9226e11f1ca989)
 - [RabbitMQ Tutorials](https://www.rabbitmq.com/getstarted.html)
 - [Introdução ao RabbitMQ](https://www.youtube.com/watch?v=1WgrnSDDtVE&feature=emb_logo)
-
+- [Live de Python #145 - Interfaces gráficas com Kivy](https://www.youtube.com/watch?v=5ApbLrcUtlE)
+- [Curso de Kivy na prática](https://www.youtube.com/playlist?list=PLsMpSZTgkF5AV1FmALMgW8W-TvrfR3nrs)
