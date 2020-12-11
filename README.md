@@ -50,6 +50,7 @@ caso dê problema com a porta usada pelo rabbitmq: https://stackoverflow.com/que
 
 ## Melhorias pendentes
 
+- Deixar as interfaces do servidor e do cliente mais amigáveis/bonitas
 
 ## Materiais de estudo usados como base
 
