@@ -7,8 +7,8 @@ Devem ser implementado um servidor (sockets ou RMI/RPC) para gerenciar o
 Broker, com as seguintes funcionalidades:
 
 1. Adicionar e remover filas e tópicos :heavy_check_mark:
-2. Listas quantidade de mensagens nas filas :hourglass_flowing_sand: :bug: :shipit:	
-3. Instanciar novos usuários (verificar duplicidade de nomes) :x:
+2. Listas quantidade de mensagens nas filas :x: :bug: :shipit:	
+3. Instanciar novos usuários (verificar duplicidade de nomes) :hourglass_flowing_sand:
 4. Criar automaticamente uma fila para cada usuário novo criado :hourglass_flowing_sand:
 
 Os usuários, por sua vez, devem implementar as seguintes funcionalidades:

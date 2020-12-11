@@ -1,7 +1,6 @@
 import pika
 import time
 from pyrabbit.api import Client
-from pprint import pprint
 
 
 def criar_canal_de_conexao():
@@ -50,10 +49,11 @@ def listar_topicos():
     exchanges = cl.get_exchanges()
     topicos = []
     for e in exchanges:
-        if e["type"] == "topic":
+        if e["type"] == "topic" and "amq." not in e["name"]:
             topicos.append(e["name"])
 
     print(f"tópicos: {topicos}")
+    return topicos
 
 
 def listar_host():
@@ -99,11 +99,6 @@ if __name__ == "__main__":
     print()
     remover_topico("cumpadis")
     listar_topicos()
-    #
-    # print()
-    # listar_filas()
-    # remover_fila(destinatario)
-    # listar_filas()
 
     mensagens = [
         "Primeira mensagem",
@@ -118,7 +113,7 @@ if __name__ == "__main__":
         print(" [x] Enviada '" + msg + "'")
         time.sleep(0.5)
 
-    for msg in mensagens[:3]:
+    for msg in mensagens:
         canal.basic_publish(exchange="", routing_key=remetente, body=msg)
         print(" [x] Enviada '" + msg + "'")
         time.sleep(0.5)
