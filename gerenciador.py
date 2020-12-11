@@ -22,31 +22,31 @@ def enviar_mensagem_para_fila(canal, conexao, nome_da_fila, mensagem):
 
 
 def listar_filas():
-    cl = Client('localhost:8080', 'guest', 'guest')
-    queues = [q['name'] for q in cl.get_queues()]
+    cl = Client("localhost:8080", "guest", "guest")
+    queues = [q["name"] for q in cl.get_queues()]
     print(f"filas existentes: {queues}")
     return queues
 
 
 def remover_fila(nome_da_fila):
-    cl = Client('localhost:8080', 'guest', 'guest')
+    cl = Client("localhost:8080", "guest", "guest")
     cl.delete_queue(vhost="/", qname=nome_da_fila)
 
 
 def criar_topico(nome_do_topico):
-    cl = Client('localhost:8080', 'guest', 'guest')
-    result = cl.create_exchange('/', nome_do_topico, "topic")
+    cl = Client("localhost:8080", "guest", "guest")
+    result = cl.create_exchange("/", nome_do_topico, "topic")
     if result:
         print("tópico criado com sucesso")
 
 
 def remover_topico(nome_do_topico):
-    cl = Client('localhost:8080', 'guest', 'guest')
+    cl = Client("localhost:8080", "guest", "guest")
     cl.delete_exchange(vhost="/", name=nome_do_topico)
 
 
 def listar_topicos():
-    cl = Client('localhost:8080', 'guest', 'guest')
+    cl = Client("localhost:8080", "guest", "guest")
     exchanges = cl.get_exchanges()
     topicos = []
     for e in exchanges:
@@ -57,18 +57,22 @@ def listar_topicos():
 
 
 def listar_host():
-    cl = Client('localhost:8080', 'guest', 'guest')
+    cl = Client("localhost:8080", "guest", "guest")
     hosts = cl.get_vhost_names()
     print(f"hosts: {hosts}")
 
 
 def listar_quantidade_mensagens_nas_filas():
-    cl = Client('localhost:8080', 'guest', 'guest')
+    cl = Client("localhost:8080", "guest", "guest")
     quantidade = 0
     filas = cl.get_queues()
     for q in filas:
-        print("nome da fila: {} - quantidade de mensagens: {}".format(q["name"], q["messages"]))
-        quantidade += q['messages']
+        print(
+            "nome da fila: {} - quantidade de mensagens: {}".format(
+                q["name"], q["messages"]
+            )
+        )
+        quantidade += q["messages"]
 
     print(f"quantidade total de mensagens: {quantidade}")
     # msg = cl.get_messages("/", "hoje")
@@ -76,7 +80,7 @@ def listar_quantidade_mensagens_nas_filas():
     # print(msg)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     remetente = input("Qual o seu nome? ")
     destinatario = input("Qual o nome do usuário que você quer enviar a mensagem? ")
 
