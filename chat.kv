@@ -24,31 +24,12 @@
                     size_hint_y: None
                     height: self.minimum_height
 
-        # BoxLayout:
-        #     id: grid_adicionar_remover_usuarios
-        #     orientation: 'vertical'
-
-        #     BoxLayout:
-        #         id: adicionar_usuario
-        #         orientation: 'horizontal'
-
-        #         TextInput:
-        #             id: adicionar_usuario
-        #             text: 'Digite o nome do usuário a ser adicionado...'
-        #             font_size: 15
-
-        #         Button:
-        #             id: botao_adicionar_usuario
-        #             text: 'Adicionar usuário'
-        #             font_size: 15
-        #             on_release: app.adicionar_novo_usuario(root.ids.lista_usuarios, root.ids.adicionar_usuario.text)
-
     BoxLayout:
         id: grid_topicos
         orientation: 'horizontal'
 
         BoxLayout:
-            id: box_usuarios
+            id: box_topicos
             orientation: 'vertical'
 
             Label:
@@ -64,25 +45,6 @@
                     orientation: 'vertical'
                     size_hint_y: None
                     height: self.minimum_height
-
-        # BoxLayout:
-        #     id: grid_adicionar_remover_topicos
-        #     orientation: 'vertical'
-
-        #     BoxLayout:
-        #         id: grid_adicionar_topico
-        #         orientation: 'horizontal'
-
-        #         TextInput:
-        #             id: adicionar_topico
-        #             text: 'Digite o nome do tópico a ser adicionado...'
-        #             font_size: 15
-
-        #         Button:
-        #             id: botao_adicionar_topico
-        #             text: 'Adicionar tópico'
-        #             font_size: 15
-        #             on_release: app.adicionar_novo_topico(root.ids.lista_topicos, root.ids.adicionar_topico.text)
 
 <Usuario>
     id: usuario

@@ -20,23 +20,21 @@ class ServidorRMI(object):
     def pegar_nomes_dos_usuarios(self):
         return self.nomes_usuarios_conectados
 
-    def registrar(self, nome_canal, nome_usuario, objeto_usuario):
-        if not nome_canal or not nome_usuario:
-            raise ValueError("Nome de canal/jogador inválido!!!")
+    def registrar(self, nome_usuario, objeto_usuario):
+        if not nome_usuario:
+            raise ValueError("Nome de usuário inválido!!!")
 
         if nome_usuario in self.nomes_usuarios_conectados:
-            raise ValueError("Esse nome de jogador já está sendo usado!!!")
+            raise ValueError("Esse nome de usuário já está sendo usado!!!")
 
-        if nome_canal not in self.canais_de_comunicacao:
-            print(f"Criando novo canal {nome_canal}")
-            self.canais_de_comunicacao[nome_canal] = []
-
-        self.canais_de_comunicacao[nome_canal].append((nome_usuario, objeto_usuario))
+        self.criar_fila(nome_usuario)
+        self.atualizar_listas_usuarios_nas_interfaces()
+        self.canais_de_comunicacao["usuarios"].append((nome_usuario, objeto_usuario))
         self.nomes_usuarios_conectados.append(nome_usuario)
         print(f"Usuário {nome_usuario} se conectou!")
 
         return [
-            nome_usuario for (nome_usuario, c) in self.canais_de_comunicacao[nome_canal]
+            nome_usuario for (nome_usuario, c) in self.canais_de_comunicacao["usuarios"]
         ]
 
     def publicar(self, nome_canal, nome_usuario, mensagem):
@@ -137,12 +135,12 @@ class ServidorRMI(object):
     def atualizar_listas_usuarios_nas_interfaces(self):
         usuarios = self.canais_de_comunicacao["usuarios"]
         for nome_usuario, objeto_usuario in usuarios:
-            objeto_usuario.interface.atualizar_listas_usuarios()
+            objeto_usuario.atualizar_listas_usuarios()
 
     def atualizar_listas_topicos_nas_interfaces(self):
         usuarios = self.canais_de_comunicacao["usuarios"]
         for nome_usuario, objeto_usuario in usuarios:
-            objeto_usuario.interface.atualizar_listas_topicos()
+            objeto_usuario.atualizar_listas_topicos()
 
 
 Pyro4.Daemon.serveSimple({ServidorRMI: "servidor.rmi"})

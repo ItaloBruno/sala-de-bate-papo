@@ -8,14 +8,14 @@ Broker, com as seguintes funcionalidades:
 
 1. Adicionar e remover filas e tópicos :heavy_check_mark:
 2. Listas quantidade de mensagens nas filas :x: :bug: :shipit:	
-3. Instanciar novos usuários (verificar duplicidade de nomes) :hourglass_flowing_sand:
-4. Criar automaticamente uma fila para cada usuário novo criado :hourglass_flowing_sand:
+3. Instanciar novos usuários (verificar duplicidade de nomes) :heavy_check_mark:
+4. Criar automaticamente uma fila para cada usuário novo criado :heavy_check_mark:
 
 Os usuários, por sua vez, devem implementar as seguintes funcionalidades:
 
 1. Permitir assinar tópicos :x:	
-2. Enviar mensagens entre usuários diretamente online :heavy_check_mark:	
-3. Enviar mensagens entre usuários diretamente offline :heavy_check_mark:
+2. Enviar mensagens entre usuários diretamente online :hourglass_flowing_sand:	
+3. Enviar mensagens entre usuários diretamente offline :hourglass_flowing_sand:
 4. Enviar mensagens para tópicos :x:
 
 

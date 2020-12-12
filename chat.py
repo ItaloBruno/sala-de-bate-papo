@@ -30,27 +30,26 @@ class Topico(Button):
 
 
 class Chat(App):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.api = Pyro4.core.Proxy("PYRONAME:servidor.rmi")
+    api = Pyro4.core.Proxy("PYRONAME:servidor.rmi")
 
     def build(self):
         usuarios: List[str] = self.api.listar_filas()
         topicos: List[str] = self.api.listar_topicos()
 
-        return InterfaceUsuario(usuarios=usuarios, topicos=topicos)
+        resultado = InterfaceUsuario(usuarios=usuarios, topicos=topicos)
+        return resultado
 
     def atualizar_listas_usuarios(self):
         usuarios: List[str] = self.api.listar_filas()
-        self.ids.lista_usuarios.clear_widgets()
+        self.root.ids.lista_usuarios.clear_widgets()
         for usuario in usuarios:
-            self.ids.lista_usuarios.add_widget(Usuario(nome_usuario=usuario))
+            self.root.ids.lista_usuarios.add_widget(Usuario(nome_usuario=usuario))
 
     def atualizar_listas_topicos(self):
         topicos: List[str] = self.api.listar_topicos()
-        self.ids.lista_topicos.clear_widgets()
+        self.root.ids.lista_topicos.clear_widgets()
         for topico in topicos:
-            self.ids.lista_topicos.add_widget(Topico(nome_topico=topico))
+            self.root.ids.lista_topicos.add_widget(Topico(nome_topico=topico))
 
 
-Chat().run()
+# Chat().run()
