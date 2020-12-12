@@ -8,10 +8,11 @@ from pyrabbit.api import Client
 @Pyro4.behavior(instance_mode="single")
 class ServidorRMI(object):
     def __init__(self):
-        self.canais_de_comunicacao = (
-            {}
-        )  # registered channels { channel --> (nick, client callback) list }
-        self.nomes_usuarios_conectados = []  # all registered nicks on this server
+        self.canais_de_comunicacao = {
+            "usuarios": [],
+            "servidor": [],
+        }
+        self.nomes_usuarios_conectados = []
 
     def pegar_canais_de_comunicacao(self):
         return list(self.canais_de_comunicacao.keys())
@@ -73,11 +74,7 @@ class ServidorRMI(object):
         canal.queue_declare(queue=nome_da_fila)
         conexao.close()
 
-    def enviar_mensagem_para_fila(self, canal, conexao, nome_da_fila, mensagem):
-        canal.basic_publish(exchange="", routing_key=nome_da_fila, body=mensagem)
-        print(" [x] Enviada '" + mensagem + "'")
-        time.sleep(0.5)
-        # conexao.close()
+        self.atualizar_listas_usuarios_nas_interfaces()
 
     def listar_filas(self):
         cl = Client("localhost:8080", "guest", "guest")
@@ -88,32 +85,13 @@ class ServidorRMI(object):
     def remover_fila(self, nome_da_fila):
         cl = Client("localhost:8080", "guest", "guest")
         cl.delete_queue(vhost="/", qname=nome_da_fila)
+        self.atualizar_listas_usuarios_nas_interfaces()
 
-    def criar_topico(self, nome_do_topico):
-        cl = Client("localhost:8080", "guest", "guest")
-        result = cl.create_exchange("/", nome_do_topico, "topic")
-        if result:
-            print("tópico criado com sucesso")
-
-    def remover_topico(self, nome_do_topico):
-        cl = Client("localhost:8080", "guest", "guest")
-        cl.delete_exchange(vhost="/", name=nome_do_topico)
-
-    def listar_topicos(self):
-        cl = Client("localhost:8080", "guest", "guest")
-        exchanges = cl.get_exchanges()
-        topicos = []
-        for e in exchanges:
-            if e["type"] == "topic" and "amq." not in e["name"]:
-                topicos.append(e["name"])
-
-        print(f"tópicos: {topicos}")
-        return topicos
-
-    def listar_host(self):
-        cl = Client("localhost:8080", "guest", "guest")
-        hosts = cl.get_vhost_names()
-        print(f"hosts: {hosts}")
+    def enviar_mensagem_para_fila(self, canal, conexao, nome_da_fila, mensagem):
+        canal.basic_publish(exchange="", routing_key=nome_da_fila, body=mensagem)
+        print(" [x] Enviada '" + mensagem + "'")
+        time.sleep(0.5)
+        # conexao.close()
 
     def listar_quantidade_mensagens_nas_filas(self):
         cl = Client("localhost:8080", "guest", "guest")
@@ -132,6 +110,39 @@ class ServidorRMI(object):
         # print(msg)
 
         return quantidade
+
+    def criar_topico(self, nome_do_topico):
+        cl = Client("localhost:8080", "guest", "guest")
+        result = cl.create_exchange("/", nome_do_topico, "topic")
+        if result:
+            print("tópico criado com sucesso")
+            self.atualizar_listas_topicos_nas_interfaces()
+
+    def listar_topicos(self):
+        cl = Client("localhost:8080", "guest", "guest")
+        exchanges = cl.get_exchanges()
+        topicos = []
+        for e in exchanges:
+            if e["type"] == "topic" and "amq." not in e["name"]:
+                topicos.append(e["name"])
+
+        print(f"tópicos: {topicos}")
+        return topicos
+
+    def remover_topico(self, nome_do_topico):
+        cl = Client("localhost:8080", "guest", "guest")
+        cl.delete_exchange(vhost="/", name=nome_do_topico)
+        self.atualizar_listas_topicos_nas_interfaces()
+
+    def atualizar_listas_usuarios_nas_interfaces(self):
+        usuarios = self.canais_de_comunicacao["usuarios"]
+        for nome_usuario, objeto_usuario in usuarios:
+            objeto_usuario.interface.atualizar_listas_usuarios()
+
+    def atualizar_listas_topicos_nas_interfaces(self):
+        usuarios = self.canais_de_comunicacao["usuarios"]
+        for nome_usuario, objeto_usuario in usuarios:
+            objeto_usuario.interface.atualizar_listas_topicos()
 
 
 Pyro4.Daemon.serveSimple({ServidorRMI: "servidor.rmi"})

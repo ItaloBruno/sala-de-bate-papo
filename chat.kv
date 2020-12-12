@@ -1,183 +1,97 @@
-<InterfaceChat>:
-    id: tela_usuario
+<InterfaceUsuario>:
+    id: tela_servidor
     orientation: 'vertical'
 
-	BoxLayout:
-        id: grid_superior
+    BoxLayout:
+        id: grid_usuarios
         orientation: 'horizontal'
 
-        ScrollView:
-			id: historico_mensagens
-
-            BoxLayout:
-                id: mensagens
-                orientation: 'vertical'
-                size_hint_y: None
-                height: self.minimum_height
-
-                Label:
-                    id: historico
-                    text: 'oi'
-                    font_size: 20
-                    size_hint_y: None
-                    height: 20
-
-                Label:
-                    id: historico
-                    text: 'tudo bem?'
-                    font_size: 20
-                    size_hint_y: None
-                    height: 20
-                Label:
-                    id: historico
-                    text: 'como vai vc'
-                    font_size: 20
-                    size_hint_y: None
-                    height: 20
-
-                Label:
-                    id: historico
-                    text: 'ieeeei'
-                    font_size: 20
-                    size_hint_y: None
-                    height: 20
-
-                Label:
-                    id: historico
-                    text: 'lascou'
-                    font_size: 20
-                    size_hint_y: None
-                    height: 20
-
         BoxLayout:
-			id: grid_usuarios_topicos
-			orientation: 'vertical'
+            id: box_usuarios
+            orientation: 'vertical'
 
-			BoxLayout:
-                id: box_usuarios
-                orientation: 'vertical'
+            Label:
+                id: label_usuarios
+                text: 'Lista de usuários'
+                font_size: 20
 
-                Label:
-                    id: label_usuarios
-                    text: 'Lista de usuários'
-                    font_size: 20
+            ScrollView:
+                id: scroll_usuarios
 
-                ScrollView:
-                    id: scroll_usuarios
+                BoxLayout:
+                    id: lista_usuarios
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
 
-                    BoxLayout:
-                        id: lista_usuarios
-                        orientation: 'vertical'
-                        size_hint_y: None
-                        height: self.minimum_height
+        # BoxLayout:
+        #     id: grid_adicionar_remover_usuarios
+        #     orientation: 'vertical'
 
-                        Button:
-                            id: usuario_1
-                            text: 'teste 1'
-                            font_size: 20
-                            size_hint_y: None
-                            height: 100
-                        Button:
-                            id: usuario_2
-                            text: 'teste 2'
-                            font_size: 20
-                            size_hint_y: None
-                            height: 100
+        #     BoxLayout:
+        #         id: adicionar_usuario
+        #         orientation: 'horizontal'
 
-                        Button:
-                            id: usuario_3
-                            text: 'teste 3'
-                            font_size: 20
-                            size_hint_y: None
-                            height: 100
+        #         TextInput:
+        #             id: adicionar_usuario
+        #             text: 'Digite o nome do usuário a ser adicionado...'
+        #             font_size: 15
 
-                        Button:
-                            id: usuario_4
-                            text: 'teste 4'
-                            font_size: 20
-                            size_hint_y: None
-                            height: 100
-
-			BoxLayout:
-                id: box_topicos
-                orientation: 'vertical'
-
-                Label:
-                    id: label_topicos
-                    text: 'Lista de tópicos'
-                    font_size: 20
-
-                ScrollView:
-                    id: scroll_topicos
-
-                    BoxLayout:
-                        id: lista_topicos
-                        orientation: 'vertical'
-                        size_hint_y: None
-                        height: self.minimum_height
-
-                        Button:
-                            id: topico_1
-                            text: 'nba'
-                            font_size: 20
-                            size_hint_y: None
-                            height: 100
-
-                        Button:
-                            id: topico_2
-                            text: 'nfl'
-                            font_size: 20
-                            size_hint_y: None
-                            height: 100
-
-                        Button:
-                            id: topico_3
-                            text: 'nbb'
-                            font_size: 20
-                            size_hint_y: None
-                            height: 100
-
-                        Button:
-                            id: topico_4
-                            text: 'mlb'
-                            font_size: 20
-                            size_hint_y: None
-                            height: 100
+        #         Button:
+        #             id: botao_adicionar_usuario
+        #             text: 'Adicionar usuário'
+        #             font_size: 15
+        #             on_release: app.adicionar_novo_usuario(root.ids.lista_usuarios, root.ids.adicionar_usuario.text)
 
     BoxLayout:
-        id: grid_inferior
-        orientation: 'vertical'
-		size_hint_y: None
-		height: 100
+        id: grid_topicos
+        orientation: 'horizontal'
 
         BoxLayout:
-            id: grid_mensagem_usuario
-            orientation: 'horizontal'
-            size_hint_y: None
-            height: 50
+            id: box_usuarios
+            orientation: 'vertical'
 
-            TextInput:
-                id: text_input_mensagem_usuario
-                text: 'Digite algo...'
+            Label:
+                id: label_topicos
+                text: 'Lista de tópicos'
                 font_size: 20
 
-            Button:
-                id: botao_enviar
-                text: 'Enviar mensagem para usuário'
-                font_size: 20
+            ScrollView:
+                id: scroll_topicos
 
-        BoxLayout:
-            id: grid_mensagem_topico
-            orientation: 'horizontal'
-            size_hint_y: None
-            height: 50
+                BoxLayout:
+                    id: lista_topicos
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
 
-            TextInput:
-                id: text_input_mensagem_topico
-                text: 'Digite algo...'
-                font_size: 20
+        # BoxLayout:
+        #     id: grid_adicionar_remover_topicos
+        #     orientation: 'vertical'
 
-            Button:
-                id: botao_enviar
-                text: 'Enviar mensagem para o tópico'
-                font_size: 20
+        #     BoxLayout:
+        #         id: grid_adicionar_topico
+        #         orientation: 'horizontal'
+
+        #         TextInput:
+        #             id: adicionar_topico
+        #             text: 'Digite o nome do tópico a ser adicionado...'
+        #             font_size: 15
+
+        #         Button:
+        #             id: botao_adicionar_topico
+        #             text: 'Adicionar tópico'
+        #             font_size: 15
+        #             on_release: app.adicionar_novo_topico(root.ids.lista_topicos, root.ids.adicionar_topico.text)
+
+<Usuario>
+    id: usuario
+    size_hint_y: None
+    height: 100
+    font_size: 20
+
+<Topico>
+    id: topico
+    size_hint_y: None
+    height: 100
+    font_size: 20
