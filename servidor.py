@@ -64,17 +64,23 @@ class Servidor(App):
         box.remove_widget(topico)
         self.api.remover_topico(nome_topico)
 
-    def atualizar_listas_usuarios(self):
+    def atualizar_listas_usuarios(
+        self,
+        box: BoxLayout,
+    ):
         usuarios: List[str] = self.api.listar_filas()
-        self.ids.lista_usuarios.clear_widgets()
+        box.clear_widgets()
         for usuario in usuarios:
-            self.ids.lista_usuarios.add_widget(Usuario(nome_usuario=usuario))
+            box.add_widget(Usuario(nome_usuario=usuario))
 
-    def atualizar_listas_topicos(self):
+    def atualizar_listas_topicos(
+        self,
+        box: BoxLayout,
+    ):
         topicos: List[str] = self.api.listar_topicos()
-        self.ids.lista_topicos.clear_widgets()
+        box.lista_topicos.clear_widgets()
         for topico in topicos:
-            self.ids.lista_topicos.add_widget(Topico(nome_topico=topico))
+            box.lista_topicos.add_widget(Topico(nome_topico=topico))
 
 
 Servidor().run()

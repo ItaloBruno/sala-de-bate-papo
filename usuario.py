@@ -1,4 +1,5 @@
 from chat import Chat
+import pika
 
 import threading
 import Pyro4
@@ -16,16 +17,50 @@ class Usuario(object):
 
     @Pyro4.expose
     @Pyro4.oneway
-    def receber_mensagem(self, nome_usuario: str, mensagem: dict):
-        ...
+    def receber_mensagem(self, msg):
+        # todo: redirecionar mensagem para um usuário em específico
+        print(f"Mensagem recebida: {msg}")
+
+    def escutar_minha_fila(self):
+        # todo: tentar executar essa função usando o servidor
+        # self.servidor.consumir_fila(self.nome, self)
+        def callback(ch, method, properties, body):
+            print(f"Mensagem recebida: {body.decode()}")
+
+        connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+        channel = connection.channel()
+
+        channel.queue_declare(queue=self.nome)
+
+        channel.basic_consume(
+            queue=self.nome, auto_ack=True, on_message_callback=callback
+        )
+
+        print(" [*] Waiting for messages. To exit press CTRL+C")
+        channel.start_consuming()
 
     def enviar_mensagem_para_algum_usuario(self):
-        ...
+        try:
+            try:
+                while not self.conexao_encerrada:
+                    destinatario = input(
+                        f"para quem você quer enviar uma mensagem? "
+                    ).strip()
+                    msg = input(f"{self.nome}> ").strip()
+                    if msg:
+                        msg = f"{self.nome} > {msg}"
+                        self.servidor.publicar(self.nome, destinatario, msg)
+            except EOFError:
+                pass
+        finally:
+            pass
 
     def enviar_mensagem_para_o_topico(self):
+        # todo: enviar mensagem par aum determinado tópico
         ...
 
     def assinar_topico(self):
+        # todo: assinar um tópico já existente
         ...
 
     def iniciar_interface_chat(self):
@@ -41,19 +76,18 @@ class Usuario(object):
             )
 
         self.nome = input("Escolha seu nome: ").strip()
+        _ = self.servidor.registrar(self.nome, self)
+
         thread_interface = threading.Thread(target=self.iniciar_interface_chat)
         thread_interface.start()
-        _ = self.servidor.registrar(self.nome, self)
-        # self.historico_de_mensagens += (
-        #     f"\nConectado como {self.nome}"
-        # )
-        # self.historico_de_mensagens += f"{self.nome} >"
 
         thread_para_enviar_mensagem = threading.Thread(
             target=self.enviar_mensagem_para_algum_usuario
         )
-
         thread_para_enviar_mensagem.start()
+
+        thread_receber_mensagem = threading.Thread(target=self.escutar_minha_fila)
+        thread_receber_mensagem.start()
 
     @Pyro4.expose
     @Pyro4.oneway

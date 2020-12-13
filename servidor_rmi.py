@@ -12,13 +12,13 @@ class ServidorRMI(object):
             "usuarios": [],
             "servidor": [],
         }
-        self.nomes_usuarios_conectados = []
+        self.nomes_usuarios_conectados = set()
 
     def pegar_canais_de_comunicacao(self):
         return list(self.canais_de_comunicacao.keys())
 
     def pegar_nomes_dos_usuarios(self):
-        return self.nomes_usuarios_conectados
+        return list(self.nomes_usuarios_conectados)
 
     def registrar(self, nome_usuario, objeto_usuario):
         if not nome_usuario:
@@ -30,24 +30,50 @@ class ServidorRMI(object):
         self.criar_fila(nome_usuario)
         self.atualizar_listas_usuarios_nas_interfaces()
         self.canais_de_comunicacao["usuarios"].append((nome_usuario, objeto_usuario))
-        self.nomes_usuarios_conectados.append(nome_usuario)
+        self.nomes_usuarios_conectados.add(nome_usuario)
         print(f"Usuário {nome_usuario} se conectou!")
 
         return [
             nome_usuario for (nome_usuario, c) in self.canais_de_comunicacao["usuarios"]
         ]
 
-    def publicar(self, nome_canal, nome_usuario, mensagem):
-        if nome_canal not in self.canais_de_comunicacao:
-            print(f"CANAL DESCONHECIDO IGNORADO {nome_canal}")
+    # def selecionar_usuario(self, nome_usuario):
+    #     for nome, objeto in self.canais_de_comunicacao["usuarios"]:
+    #         if nome == nome_usuario:
+    #             return objeto
+    #
+    #     return None
+
+    def publicar(self, nome_remetente, nome_destinatario, mensagem):
+        if nome_destinatario not in self.nomes_usuarios_conectados:
+            print(f"{nome_destinatario} não existe!")
             return
-        for (n, c) in self.canais_de_comunicacao[nome_canal][:]:
-            try:
-                c.receber_mensagem(nome_usuario, mensagem)
-            except Pyro4.errors.ConnectionClosedError:
-                if (n, c) in self.canais_de_comunicacao[nome_canal]:
-                    self.canais_de_comunicacao[nome_canal].remove((n, c))
-                    print(f"Ouvinte morto removido {n} - {c} ")
+
+        connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+        channel = connection.channel()
+        channel.queue_declare(queue=nome_destinatario)
+        channel.basic_publish(exchange="", routing_key=nome_destinatario, body=mensagem)
+        print(
+            f" [x] Mensagem de {nome_remetente} enviada para {nome_destinatario}: {mensagem}"
+        )
+        connection.close()
+
+    def consumir_fila(self, nome_usuario, objeto_usuario):
+        # todo: não está funcionando da forma correta
+        def callback(ch, method, properties, body):
+            objeto_usuario.receber_mensagem(body)
+
+        connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+        channel = connection.channel()
+
+        channel.queue_declare(queue=nome_usuario)
+
+        channel.basic_consume(
+            queue=nome_usuario, auto_ack=True, on_message_callback=callback
+        )
+
+        print(" [*] Waiting for messages. To exit press CTRL+C")
+        channel.start_consuming()
 
     def desconectar_usuario(self, nome_canal, nome_usuario):
         if nome_canal not in self.canais_de_comunicacao:
@@ -72,6 +98,7 @@ class ServidorRMI(object):
         canal.queue_declare(queue=nome_da_fila)
         conexao.close()
 
+        self.nomes_usuarios_conectados.add(nome_da_fila)
         self.atualizar_listas_usuarios_nas_interfaces()
 
     def listar_filas(self):

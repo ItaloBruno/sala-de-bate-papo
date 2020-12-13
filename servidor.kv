@@ -10,10 +10,20 @@
             id: box_usuarios
             orientation: 'vertical'
 
-            Label:
-                id: label_usuarios
-                text: 'Lista de usuários'
-                font_size: 20
+			BoxLayout:
+                id: box_label_usuario
+                orientation: 'horizontal'
+
+                Label:
+                    id: label_usuarios
+                    text: 'Lista de usuários'
+                    font_size: 20
+
+                Button:
+                    text: "atualizar"
+                    size_hint_x: None
+                    width: 100
+                    on_release: app.atualizar_listas_usuarios(root.ids.lista_usuarios)
 
             ScrollView:
                 id: scroll_usuarios
@@ -48,7 +58,7 @@
         orientation: 'horizontal'
 
         BoxLayout:
-            id: box_usuarios
+            id: box_topicos
             orientation: 'vertical'
 
             Label:

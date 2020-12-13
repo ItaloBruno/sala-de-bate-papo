@@ -38,8 +38,18 @@ Os usuários, por sua vez, devem implementar as seguintes funcionalidades:
 
 ## Executando o projeto
 
+1. RabbitMQ
+
 ` docker run --rm -p 5672:5672 -p 8080:15672 rabbitmq:3-management `
+
 agora acesse ` http://localhost:8080 ` com usuario e senha `guest`
+
+
+2.  Você deve subir o servidor de nomes, para que possamos 
+    registrar o servidor do jogo e possibilitar o ser acesso remoto. 
+    Para isso, abra um terminal e execute o comando abaixo:
+
+    `pyro4-ns`
 
 ## Dificuldades encontradas
 
