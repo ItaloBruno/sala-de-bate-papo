@@ -1,15 +1,37 @@
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-
+from kivy.uix.screenmanager import Screen, ScreenManager
 from typing import List
-
 import Pyro4
 
 
-class InterfaceUsuario(BoxLayout):
-    def __init__(self, usuarios: List[str], topicos: List[str], **kwargs):
+api = Pyro4.core.Proxy("PYRONAME:servidor.rmi")
+
+
+class Gerenciador(ScreenManager):
+    ...
+
+
+class HistoricoUsuario(Screen):
+    ...
+
+
+class HistoricoTopico(Screen):
+    ...
+
+
+class Topico(Screen):
+    ...
+
+
+class InterfaceUsuario(Screen):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+    def criar_listas(self):
+        usuarios: List[str] = api.listar_filas()
+        topicos: List[str] = api.listar_topicos()
+
         for usuario in usuarios:
             self.ids.lista_usuarios.add_widget(Usuario(nome_usuario=usuario))
 
@@ -30,26 +52,23 @@ class Topico(Button):
 
 
 class Chat(App):
-    api = Pyro4.core.Proxy("PYRONAME:servidor.rmi")
-
     def build(self):
-        usuarios: List[str] = self.api.listar_filas()
-        topicos: List[str] = self.api.listar_topicos()
-
-        resultado = InterfaceUsuario(usuarios=usuarios, topicos=topicos)
-        return resultado
+        gerenciador = Gerenciador()
+        gerenciador.get_screen("tela_principal").criar_listas()
+        return gerenciador
 
     def atualizar_listas_usuarios(self):
-        usuarios: List[str] = self.api.listar_filas()
-        self.root.ids.lista_usuarios.clear_widgets()
+        usuarios: List[str] = api.listar_filas()
+        self.root.get_screen("tela_principal").ids.lista_usuarios.clear_widgets()
         for usuario in usuarios:
-            self.root.ids.lista_usuarios.add_widget(Usuario(nome_usuario=usuario))
+            self.root.get_screen("tela_principal").ids.lista_usuarios.add_widget(
+                Usuario(nome_usuario=usuario)
+            )
 
     def atualizar_listas_topicos(self):
-        topicos: List[str] = self.api.listar_topicos()
-        self.root.ids.lista_topicos.clear_widgets()
+        topicos: List[str] = api.listar_topicos()
+        self.root.get_screen("tela_principal").ids.lista_topicos.clear_widgets()
         for topico in topicos:
-            self.root.ids.lista_topicos.add_widget(Topico(nome_topico=topico))
-
-
-# Chat().run()
+            self.root.get_screen("tela_principal").ids.lista_topicos.add_widget(
+                Topico(nome_topico=topico)
+            )

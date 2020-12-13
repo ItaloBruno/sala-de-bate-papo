@@ -2,6 +2,14 @@
     id: tela_servidor
     orientation: 'vertical'
 
+    ActionBar:
+        ActionView:
+            ActionPrevious:
+                title: 'servidor'
+            ActionButton:
+                text: 'sair'
+                on_release: app.stop()
+
     BoxLayout:
         id: grid_usuarios
         orientation: 'horizontal'

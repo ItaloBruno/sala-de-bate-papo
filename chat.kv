@@ -1,59 +1,156 @@
+<Gerenciador>
+    InterfaceUsuario:
+        name: 'tela_principal'
+
+    HistoricoUsuario:
+        name: 'historico_usuario'
+
+    HistoricoTopico:
+        name: 'historico_topico'
+
 <InterfaceUsuario>:
-    id: tela_servidor
-    orientation: 'vertical'
-
     BoxLayout:
-        id: grid_usuarios
-        orientation: 'horizontal'
+        id: tela_servidor
+        orientation: 'vertical'
+
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'tela inicial'
+                ActionButton:
+                    text: 'sair'
+                    on_release: app.stop()
 
         BoxLayout:
-            id: box_usuarios
-            orientation: 'vertical'
+            id: grid_usuarios
+            orientation: 'horizontal'
 
-            Label:
-                id: label_usuarios
-                text: 'Lista de usuários'
-                font_size: 20
+            BoxLayout:
+                id: box_usuarios
+                orientation: 'vertical'
+                # spacing: 10
 
-            ScrollView:
-                id: scroll_usuarios
+                Label:
+                    id: label_usuarios
+                    text: 'Lista de usuários'
+                    font_size: 20
 
-                BoxLayout:
-                    id: lista_usuarios
-                    orientation: 'vertical'
-                    size_hint_y: None
-                    height: self.minimum_height
+                ScrollView:
+                    id: scroll_usuarios
 
-    BoxLayout:
-        id: grid_topicos
-        orientation: 'horizontal'
+                    BoxLayout:
+                        id: lista_usuarios
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
 
         BoxLayout:
-            id: box_topicos
+            id: grid_topicos
+            orientation: 'horizontal'
+
+            BoxLayout:
+                id: box_topicos
+                orientation: 'vertical'
+                # spacing: 10
+
+                Label:
+                    id: label_topicos
+                    text: 'Lista de tópicos'
+                    font_size: 20
+
+                ScrollView:
+                    id: scroll_topicos
+
+                    BoxLayout:
+                        id: lista_topicos
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
+
+<HistoricoUsuario>
+    BoxLayout:
+        orientation: 'vertical'
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'usuário'
+                    on_release: app.root.current = 'tela_principal'
+                ActionButton:
+                    text: 'sair'
+                    on_release: app.stop()
+        Button:
+            text: "histórico do usuário"
+
+        BoxLayout:
+            id: grid_historico_usuario
             orientation: 'vertical'
+            size_hint_y: None
+            height: 100
 
-            Label:
-                id: label_topicos
-                text: 'Lista de tópicos'
-                font_size: 20
+            BoxLayout:
+                id: grid_mensagem_usuario
+                orientation: 'horizontal'
 
-            ScrollView:
-                id: scroll_topicos
+                TextInput:
+                    id: mensagem_usuario
+                    text: 'Digite algo...'
+                    font_size: 15
 
-                BoxLayout:
-                    id: lista_topicos
-                    orientation: 'vertical'
-                    size_hint_y: None
-                    height: self.minimum_height
+                Button:
+                    id: botao_enviar_mensagem_usuario
+                    text: 'Enviar'
+                    size_hint_x: None
+                    width: 100
+                    font_size: 15
+                    # on_release: app.adicionar_novo_topico(root.ids.lista_topicos, root.ids.adicionar_topico.text)
+
+<HistoricoTopico>
+    BoxLayout:
+        orientation: 'vertical'
+
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'usuário'
+                    on_release: app.root.current = 'tela_principal'
+
+        Button:
+            text: "histórico do tópico"
+
+        BoxLayout:
+            id: grid_historico_topico
+            orientation: 'vertical'
+            size_hint_y: None
+            height: 100
+
+            BoxLayout:
+                id: grid_mensagem_topico
+                orientation: 'horizontal'
+
+                TextInput:
+                    id: mensagem_topico
+                    text: 'Digite algo...'
+                    font_size: 15
+
+                Button:
+                    id: botao_enviar_mensagem_topico
+                    text: 'Enviar'
+                    size_hint_x: None
+                    width: 100
+                    font_size: 15
+                    # on_release: app.adicionar_novo_topico(root.ids.lista_topicos, root.ids.adicionar_topico.text)
 
 <Usuario>
     id: usuario
     size_hint_y: None
     height: 100
     font_size: 20
+    on_release: app.root.current = 'historico_usuario'
 
 <Topico>
     id: topico
     size_hint_y: None
     height: 100
     font_size: 20
+    on_release: app.root.current = 'historico_topico'
+
