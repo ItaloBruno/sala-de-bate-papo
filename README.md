@@ -7,15 +7,15 @@ Devem ser implementado um servidor (sockets ou RMI/RPC) para gerenciar o
 Broker, com as seguintes funcionalidades:
 
 1. Adicionar e remover filas e tópicos :heavy_check_mark:
-2. Listas quantidade de mensagens nas filas :x: :bug: :shipit:	
+2. Listas quantidade de mensagens nas filas :hourglass_flowing_sand: :bug: :shipit:	
 3. Instanciar novos usuários (verificar duplicidade de nomes) :heavy_check_mark:
 4. Criar automaticamente uma fila para cada usuário novo criado :heavy_check_mark:
 
 Os usuários, por sua vez, devem implementar as seguintes funcionalidades:
 
 1. Permitir assinar tópicos :x:	
-2. Enviar mensagens entre usuários diretamente online :hourglass_flowing_sand:	
-3. Enviar mensagens entre usuários diretamente offline :hourglass_flowing_sand:
+2. Enviar mensagens entre usuários diretamente online :heavy_check_mark:	
+3. Enviar mensagens entre usuários diretamente offline :hourglass_flowing_sand: :bug: :shipit:	
 4. Enviar mensagens para tópicos :x:
 
 
@@ -38,29 +38,53 @@ Os usuários, por sua vez, devem implementar as seguintes funcionalidades:
 
 ## Executando o projeto
 
-1. RabbitMQ
-
+1. Para começar, precisamos subir o serviço do RabbitMQ. Para isso, execute o seguinte comando 
+   (caso você tenha o docker instalado em sua máquina):
+   
 ` docker run --rm -p 5672:5672 -p 8080:15672 rabbitmq:3-management `
 
-agora acesse ` http://localhost:8080 ` com usuario e senha `guest`
+obs.: caso você não tenho o [Docker](https://www.docker.com/) instalado, instale-o ou siga as instruções do site ofical do [RabbitMQ](https://www.rabbitmq.com/download.html) 
+
+Após subir o serviço, acesse ` http://localhost:8080 ` com usuario e senha `guest` para acessar o gerenciador diretamente do browser.
 
 
 2.  Você deve subir o servidor de nomes, para que possamos 
-    registrar o servidor do jogo e possibilitar o ser acesso remoto. 
+    registrar o servidor do chat e possibilitar o seu acesso remoto. 
     Para isso, abra um terminal e execute o comando abaixo:
 
     `pyro4-ns`
 
+3. Para registra o servidor no servidor de nomes, abra um outro terminal e execute:
+
+    ` python servidor_rmi.py `
+
+4. Agora para iniciar a interface de gerenciamento do servidor, abra um novo terminal e execute:
+
+    ` python servidor.py `
+
+5. Tamo chegando lá, calma kkk. Para executar a interface do usuário, abra um novo terminal para cada 
+   novo chat que você queira utilizar e execute o comando abaixo:
+   
+    ` python usuario.py `
+
+Ufa, acho que agora podemos bater um papo em paz. Aproveitem xD
+
 ## Dificuldades encontradas
 
-Na primeira vez que fui executar o hello world, tive que utilizar o comando abaixo:
+- Na primeira vez que fui executar o hello world, tive que utilizar o comando abaixo:
 ` sudo apt-get install rabbitmq-server `. Após isso, foi possível enviar a mensagem para o broker.
 
-caso dê problema com a porta usada pelo rabbitmq: https://stackoverflow.com/questions/40266556/address-already-in-use-error-upon-docker-compose-up/40266908
+- Caso dê problema com a porta usada pelo rabbitmq: 
+  
+    ` https://stackoverflow.com/questions/40266556/address-already-in-use-error-upon-docker-compose-up/40266908 `
+
+- Não consegui utilizar uma função no servidor_rmi para escutar as filas. A solução que achei foi deixar essa parte no próprio usuário :pensive:
 
 ## Melhorias pendentes
 
 - Deixar as interfaces do servidor e do cliente mais amigáveis/bonitas
+- Possibilitar que o usuário assine tópicos existentes no servidor
+- Mostrar o histórico de mensagens vindas desses tópicos
 
 ## Materiais de estudo usados como base
 
