@@ -20,8 +20,16 @@ class HistoricoTopico(Screen):
     ...
 
 
-class Topico(Screen):
-    ...
+class Usuario(Button):
+    def __init__(self, nome_usuario: str = "", **kwargs):
+        super().__init__(**kwargs)
+        self.text = nome_usuario
+
+
+class Topico(Button):
+    def __init__(self, nome_topico: str = "", **kwargs):
+        super().__init__(**kwargs)
+        self.text = nome_topico
 
 
 class InterfaceUsuario(Screen):
@@ -39,22 +47,17 @@ class InterfaceUsuario(Screen):
             self.ids.lista_topicos.add_widget(Topico(nome_topico=topico))
 
 
-class Usuario(Button):
-    def __init__(self, nome_usuario: str = "", **kwargs):
-        super().__init__(**kwargs)
-        self.text = nome_usuario
-
-
-class Topico(Button):
-    def __init__(self, nome_topico: str = "", **kwargs):
-        super().__init__(**kwargs)
-        self.text = nome_topico
-
-
 class Chat(App):
+    def __init__(self):
+        super(Chat, self).__init__()
+        self.referencia_usuario = None
+
     def build(self):
         gerenciador = Gerenciador()
         gerenciador.get_screen("tela_principal").criar_listas()
+        gerenciador.get_screen(
+            "tela_principal"
+        ).ids.menu_tela_principal.title = self.referencia_usuario.nome
         return gerenciador
 
     def atualizar_listas_usuarios(self):
@@ -72,3 +75,20 @@ class Chat(App):
             self.root.get_screen("tela_principal").ids.lista_topicos.add_widget(
                 Topico(nome_topico=topico)
             )
+
+    def enviar_mensagem_usuario(self, mensagem: str, destinatario: str):
+        self.root.get_screen("historico_usuario").ids.mensagem_usuario.text = ""
+        self.referencia_usuario.enviar_mensagem_para_algum_usuario(
+            mensagem=mensagem, destinatario=destinatario
+        )
+        self.mostrar_historico_usuario(nome_usuario=destinatario, tipo="usuarios")
+
+    def mostrar_historico_usuario(self, nome_usuario: str, tipo: str):
+        historico = self.referencia_usuario.pegar_historico(
+            nome=nome_usuario, tipo=tipo
+        )
+        self.root.get_screen("historico_usuario").ids.nome_usuario.title = nome_usuario
+        self.root.get_screen(
+            "historico_usuario"
+        ).ids.historico_do_usuario.text = historico
+        self.root.current = "historico_usuario"

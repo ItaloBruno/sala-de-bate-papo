@@ -16,6 +16,7 @@
         ActionBar:
             ActionView:
                 ActionPrevious:
+                    id: menu_tela_principal
                     title: 'tela inicial'
                 ActionButton:
                     text: 'sair'
@@ -73,12 +74,14 @@
         ActionBar:
             ActionView:
                 ActionPrevious:
+                    id: nome_usuario
                     title: 'usuário'
                     on_release: app.root.current = 'tela_principal'
                 ActionButton:
                     text: 'sair'
                     on_release: app.stop()
-        Button:
+        TextInput:
+            id: historico_do_usuario
             text: "histórico do usuário"
 
         BoxLayout:
@@ -102,7 +105,7 @@
                     size_hint_x: None
                     width: 100
                     font_size: 15
-                    # on_release: app.adicionar_novo_topico(root.ids.lista_topicos, root.ids.adicionar_topico.text)
+                    on_release: app.enviar_mensagem_usuario(root.ids.mensagem_usuario.text, root.ids.nome_usuario.title)
 
 <HistoricoTopico>
     BoxLayout:
@@ -115,6 +118,7 @@
                     on_release: app.root.current = 'tela_principal'
 
         Button:
+            id: historico_do_topico
             text: "histórico do tópico"
 
         BoxLayout:
@@ -145,12 +149,12 @@
     size_hint_y: None
     height: 100
     font_size: 20
-    on_release: app.root.current = 'historico_usuario'
+    on_release: app.mostrar_historico_usuario(root.text, 'usuarios')
 
 <Topico>
     id: topico
     size_hint_y: None
     height: 100
     font_size: 20
-    on_release: app.root.current = 'historico_topico'
+    on_release: app.mostrar_historico_topico(root.text, 'topicos')
 
