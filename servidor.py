@@ -61,6 +61,7 @@ class Servidor(App):
         nome_topico = topico.ids.topico.text
         box.remove_widget(topico)
         self.api.remover_topico(nome_topico)
+        self.api.atualizar_listas_topicos_nas_interfaces()
 
     def atualizar_listas_usuarios(
         self,
