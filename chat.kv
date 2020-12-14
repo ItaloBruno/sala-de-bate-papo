@@ -114,12 +114,22 @@
         ActionBar:
             ActionView:
                 ActionPrevious:
-                    title: 'usuário'
+                    id: nome_topico
+                    title: 'tópico'
                     on_release: app.root.current = 'tela_principal'
+                
+                ActionButton:
+                    text: 'assinar tópico'
+                    on_release: app.assinar_topico(root.ids.nome_topico.title)
+                
+                ActionButton:
+                    text: 'sair'
+                    on_release: app.stop()
+                
 
-        Button:
+        TextInput:
             id: historico_do_topico
-            text: "histórico do tópico"
+            text: "histórico do topico"
 
         BoxLayout:
             id: grid_historico_topico
@@ -142,19 +152,19 @@
                     size_hint_x: None
                     width: 100
                     font_size: 15
-                    # on_release: app.adicionar_novo_topico(root.ids.lista_topicos, root.ids.adicionar_topico.text)
+                    on_release: app.enviar_mensagem_topico(root.ids.mensagem_topico.text, root.ids.nome_topico.title)
 
 <Usuario>
     id: usuario
     size_hint_y: None
     height: 100
     font_size: 20
-    on_release: app.mostrar_historico_usuario(root.text, 'usuarios')
+    on_release: app.mostrar_historico_usuario(root.text)
 
 <Topico>
     id: topico
     size_hint_y: None
     height: 100
     font_size: 20
-    on_release: app.mostrar_historico_topico(root.text, 'topicos')
+    on_release: app.mostrar_historico_topico(root.text)
 

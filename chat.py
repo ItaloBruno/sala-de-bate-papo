@@ -60,7 +60,7 @@ class Chat(App):
         ).ids.menu_tela_principal.title = self.referencia_usuario.nome
         return gerenciador
 
-    def atualizar_listas_usuarios(self):
+    def atualizar_listas_usuarios(self) -> None:
         usuarios: List[str] = api.listar_filas()
         self.root.get_screen("tela_principal").ids.lista_usuarios.clear_widgets()
         for usuario in usuarios:
@@ -68,7 +68,7 @@ class Chat(App):
                 Usuario(nome_usuario=usuario)
             )
 
-    def atualizar_listas_topicos(self):
+    def atualizar_listas_topicos(self) -> None:
         topicos: List[str] = api.listar_topicos()
         self.root.get_screen("tela_principal").ids.lista_topicos.clear_widgets()
         for topico in topicos:
@@ -76,19 +76,38 @@ class Chat(App):
                 Topico(nome_topico=topico)
             )
 
-    def enviar_mensagem_usuario(self, mensagem: str, destinatario: str):
+    def enviar_mensagem_usuario(self, mensagem: str, destinatario: str) -> None:
         self.root.get_screen("historico_usuario").ids.mensagem_usuario.text = ""
         self.referencia_usuario.enviar_mensagem_para_algum_usuario(
             mensagem=mensagem, destinatario=destinatario
         )
-        self.mostrar_historico_usuario(nome_usuario=destinatario, tipo="usuarios")
+        self.mostrar_historico_usuario(nome_usuario=destinatario)
 
-    def mostrar_historico_usuario(self, nome_usuario: str, tipo: str):
+    def mostrar_historico_usuario(self, nome_usuario: str) -> None:
         historico = self.referencia_usuario.pegar_historico(
-            nome=nome_usuario, tipo=tipo
+            nome=nome_usuario, tipo="usuarios"
         )
         self.root.get_screen("historico_usuario").ids.nome_usuario.title = nome_usuario
         self.root.get_screen(
             "historico_usuario"
         ).ids.historico_do_usuario.text = historico
         self.root.current = "historico_usuario"
+
+    def mostrar_historico_topico(self, nome_topico: str) -> None:
+        historico = self.referencia_usuario.pegar_historico(
+            nome=nome_topico, tipo="topicos"
+        )
+        historico_topico = self.root.get_screen("historico_topico")
+        historico_topico.ids.nome_topico.title = nome_topico
+        historico_topico.ids.historico_do_topico.text = historico
+        self.root.current = "historico_topico"
+
+    def assinar_topico(self, nome_topico: str) -> None:
+        self.referencia_usuario.assinar_topico(nome_topico=nome_topico)
+
+    def enviar_mensagem_topico(self, mensagem: str, nome_topico: str) -> None:
+        self.root.get_screen("historico_topico").ids.mensagem_topico.text = ""
+        self.referencia_usuario.enviar_mensagem_para_o_topico(
+            nome_topico=nome_topico, mensagem=mensagem
+        )
+        self.mostrar_historico_topico(nome_topico=nome_topico)

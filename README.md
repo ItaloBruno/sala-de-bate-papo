@@ -1,9 +1,9 @@
 # Sala de bate papo
 
 Implementar um Sistema de Gerenciamento e Utilização de Comunicação
-por Mensagens
+por Mensagens.
 
-Devem ser implementado um servidor (sockets ou RMI/RPC) para gerenciar o
+Deve ser implementado um servidor (sockets ou RMI/RPC) para gerenciar o
 Broker, com as seguintes funcionalidades:
 
 1. Adicionar e remover filas e tópicos :heavy_check_mark:
@@ -13,10 +13,10 @@ Broker, com as seguintes funcionalidades:
 
 Os usuários, por sua vez, devem implementar as seguintes funcionalidades:
 
-1. Permitir assinar tópicos :x:	
+1. Permitir assinar tópicos :heavy_check_mark:
 2. Enviar mensagens entre usuários diretamente online :heavy_check_mark:	
 3. Enviar mensagens entre usuários diretamente offline :hourglass_flowing_sand: :bug: :shipit:	
-4. Enviar mensagens para tópicos :x:
+4. Enviar mensagens para tópicos :hourglass_flowing_sand: :bug:
 
 
 ## Tecnologias utilizadas nesse projeto
@@ -52,7 +52,7 @@ Após subir o serviço, acesse ` http://localhost:8080 ` com usuario e senha `gu
     registrar o servidor do chat e possibilitar o seu acesso remoto. 
     Para isso, abra um terminal e execute o comando abaixo:
 
-    `pyro4-ns`
+    ` pyro4-ns `
 
 3. Para registra o servidor no servidor de nomes, abra um outro terminal e execute:
 
@@ -63,7 +63,7 @@ Após subir o serviço, acesse ` http://localhost:8080 ` com usuario e senha `gu
     ` python servidor.py `
 
 5. Tamo chegando lá, calma kkk. Para executar a interface do usuário, abra um novo terminal para cada 
-   novo chat que você queira utilizar e execute o comando abaixo:
+   novo usuário que você queira utilizar e execute o comando abaixo:
    
     ` python usuario.py `
 
@@ -71,20 +71,22 @@ Ufa, acho que agora podemos bater um papo em paz. Aproveitem xD
 
 ## Dificuldades encontradas
 
-- Na primeira vez que fui executar o hello world, tive que utilizar o comando abaixo:
-` sudo apt-get install rabbitmq-server `. Após isso, foi possível enviar a mensagem para o broker.
+- Na primeira vez que fui executar o hello world do rabbitmq, tive que utilizar o comando abaixo:
 
-- Caso dê problema com a porta usada pelo rabbitmq: 
+` sudo apt-get install rabbitmq-server `
   
-    ` https://stackoverflow.com/questions/40266556/address-already-in-use-error-upon-docker-compose-up/40266908 `
+Após isso, foi possível enviar a mensagem para o broker.
 
+- Caso dê problema com a porta usada pelo rabbitmq, acesse esse [link](https://stackoverflow.com/questions/40266556/address-already-in-use-error-upon-docker-compose-up/40266908)
+  
 - Não consegui utilizar uma função no servidor_rmi para escutar as filas. A solução que achei foi deixar essa parte no próprio usuário :pensive:
 
 ## Melhorias pendentes
 
 - Deixar as interfaces do servidor e do cliente mais amigáveis/bonitas
-- Possibilitar que o usuário assine tópicos existentes no servidor
-- Mostrar o histórico de mensagens vindas desses tópicos
+- Enviar de forma correta as mensagens para todos que assinam um tópico
+- Colocar a informação da quantidade de mensagens em cada fila na interface do servidor (existe uma função que busca essa informação mas não está sendo utilizada na GUI)
+- Permitir a comunicação entre usuários que estejam offline
 
 ## Materiais de estudo usados como base
 
